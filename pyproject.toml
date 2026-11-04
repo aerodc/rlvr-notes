@@ -1,0 +1,27 @@
+[project]
+name = "rl-env-lab"
+version = "0.1.0"
+description = "Learning how RLVR environments are built: verifiers, sandboxes, difficulty calibration."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# Only needed for s0_baseline/train_grpo.py (the optional GPU stage).
+# Everything else runs on the standard library.
+train = [
+    "torch>=2.5",
+    "transformers>=4.45",
+    "trl>=0.20",
+    "datasets>=3.0",
+    "accelerate>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["s1_verifier", "s3_difficulty"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100

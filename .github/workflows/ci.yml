@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  invariants:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: verifier tests
+        run: python -m pytest s1_verifier -q
+
+      - name: environment invariants
+        run: python s2_env_service/client.py --selftest
+
+      - name: difficulty sweep runs
+        run: python s3_difficulty/sweep.py --json > /dev/null
+
+      - name: demos run
+        run: |
+          python s0_baseline/toy_grpo.py --task flat --json
+          python s4_failure/leaky_verifier.py --json

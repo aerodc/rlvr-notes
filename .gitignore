@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Runs / artifacts
+runs/
+outputs/
+*.png
+!docs/*.png
+
+# OS
+.DS_Store
+
+# Local secrets
+.env
