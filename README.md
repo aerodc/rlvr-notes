@@ -70,6 +70,8 @@ No dependencies for any of the above. Python 3.11+ and Node 20+.
 
 1. [`docs/00-mental-model.md`](docs/00-mental-model.md) — 5 minutes, the frame
 2. [`docs/01-glossary.md`](docs/01-glossary.md) — 25 terms, one line each
+
+Start at the bottom instead? [`docs/06-rl-basics.md`](docs/06-rl-basics.md) is the same material as an eight-rung ladder from the MDP upward.
 3. [`docs/03-grpo-in-60-lines.md`](docs/03-grpo-in-60-lines.md) — the math, alongside the code
 4. [`docs/12-questions.md`](docs/12-questions.md) — the self-test. If you can answer these, you can hold a technical conversation with a lab.
 5. [`docs/04-memo.md`](docs/04-memo.md) — the one-page position to carry into the job, with the blanks filled from measurement rather than opinion.
