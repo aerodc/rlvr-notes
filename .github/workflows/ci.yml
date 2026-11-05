@@ -19,11 +19,18 @@ jobs:
         with:
           node-version: "22"
 
+      # The repo has no runtime dependencies; pytest is the only thing needed.
+      - name: install test tooling
+        run: python -m pip install --disable-pip-version-check --quiet pytest
+
       - name: verifier tests
         run: python -m pytest s1_verifier -q
 
       - name: environment invariants
         run: python s2_env_service/client.py --selftest
+
+      - name: environment load test
+        run: python s2_env_service/client.py --load --clients 8 --requests 40
 
       - name: difficulty sweep runs
         run: python s3_difficulty/sweep.py --json > /dev/null
@@ -31,4 +38,5 @@ jobs:
       - name: demos run
         run: |
           python s0_baseline/toy_grpo.py --task flat --json
+          python s0_baseline/toy_grpo.py --task noisy --json
           python s4_failure/leaky_verifier.py --json
