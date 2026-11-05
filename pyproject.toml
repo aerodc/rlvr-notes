@@ -1,5 +1,5 @@
 [project]
-name = "rl-env-lab"
+name = "rlvr-notes"
 version = "0.1.0"
 description = "Learning how RLVR environments are built: verifiers, sandboxes, difficulty calibration."
 requires-python = ">=3.11"

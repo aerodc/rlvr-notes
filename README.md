@@ -1,6 +1,17 @@
-# rl-env-lab
+# rlvr-notes
 
-A small lab for learning how **RLVR environments** work — from the side that *builds* them, not the side that trains on them.
+Notes and small runnable experiments on how **RLVR environments** work — from the
+side that *builds* them, not the side that trains on them.
+
+> **Companion repo.** The hands-on half lives in TypeScript at
+> [`aerodc/rl-env-lab`](https://github.com/aerodc/rl-env-lab): a mail-app clone, a
+> gym-style `reset / step / grade` environment, graders with oracles, and a
+> parallel rollout harness. **That** is the platform; **this** is the theory and
+> the small Python illustrations explaining why the platform is shaped that way.
+>
+> If you read one file here, read [`s3_difficulty`](s3_difficulty): it derives the
+> 20–80% band from the binomial, which turns calibration from folklore into
+> arithmetic.
 
 Most RL material is written for people who want to train models. This is written for people who want to build the **environments models are trained in**: task specs, sandboxes, deterministic verifiers, difficulty calibration, and the cost and latency profile of running thousands of rollouts.
 
@@ -44,7 +55,7 @@ Optional, GPU: [`s0_baseline/train_grpo.py`](s0_baseline/train_grpo.py) runs the
 ## Quickstart
 
 ```bash
-git clone <this repo> && cd rl-env-lab
+git clone git@github.com:aerodc/rlvr-notes.git && cd rlvr-notes
 make toy        # S0: watch a policy learn, then watch it fail to learn
 make test       # S1: verifier tests, including a determinism check
 make env        # S2: start the env service on :8787
