@@ -72,6 +72,7 @@ No dependencies for any of the above. Python 3.11+ and Node 20+.
 2. [`docs/01-glossary.md`](docs/01-glossary.md) — 25 terms, one line each
 3. [`docs/03-grpo-in-60-lines.md`](docs/03-grpo-in-60-lines.md) — the math, alongside the code
 4. [`docs/12-questions.md`](docs/12-questions.md) — the self-test. If you can answer these, you can hold a technical conversation with a lab.
+5. [`docs/04-memo.md`](docs/04-memo.md) — the one-page position to carry into the job, with the blanks filled from measurement rather than opinion.
 
 ---
 
