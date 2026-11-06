@@ -73,6 +73,8 @@ No dependencies for any of the above. Python 3.11+ and Node 20+.
 
 Start at the bottom instead? [`docs/06-rl-basics.md`](docs/06-rl-basics.md) is the same material as an eight-rung ladder from the MDP upward.
 3. [`docs/03-grpo-in-60-lines.md`](docs/03-grpo-in-60-lines.md) — the math, alongside the code
+
+4. [`docs/07-vocabulary.md`](docs/07-vocabulary.md) — gradient → baseline → advantage → group → regularisation, as a chain where each word is forced by the previous one
 4. [`docs/12-questions.md`](docs/12-questions.md) — the self-test. If you can answer these, you can hold a technical conversation with a lab.
 5. [`docs/04-memo.md`](docs/04-memo.md) — the one-page position to carry into the job, with the blanks filled from measurement rather than opinion.
 6. [`docs/05-first-30-days.md`](docs/05-first-30-days.md) — the commitment doc: three deliverables, the asks, and the things I will not do.
