@@ -14,6 +14,7 @@ you have parameters θ and a number you want to improve     (a loss)
    → you cannot try every setting, so you need a direction  (the gradient)
    → the gradient only says which way, not how far          (the learning rate)
    → in RL the number is not differentiable w.r.t. θ        (the score-function trick)
+   → so you minimise a surrogate, reward becomes a weight  (the surrogate loss)
    → that estimator is deafeningly noisy                    (the baseline)
    → what is left after the baseline is the useful part     (the advantage)
    → you still need a baseline, and a critic is expensive   (the group)
@@ -29,8 +30,38 @@ you have parameters θ and a number you want to improve     (a loss)
 `θ` is everything the model can change — billions of weights. `L(θ)` is a single
 number that says how wrong it currently is.
 
-Every training method in existence is a procedure for making `L` smaller by
-changing `θ`. The question is only *how*.
+A loss has to satisfy three things:
+
+1. be a **scalar** — an optimiser can only minimise a number,
+2. be **differentiable** — otherwise there is no gradient (section 2),
+3. be **aligned with what you actually want** — the one that is always violated,
+   and always expensive.
+
+Two standard shapes:
+
+| Loss | Form | Where |
+|---|---|---|
+| mean squared error | `(ŷ − y)²` | regression |
+| cross-entropy | `−log p(correct)` | classification, language models |
+
+Language-model pretraining is just the average of the second:
+
+```
+L = − (1/N) Σ log p(token_i | prefix)
+```
+
+**Hold on to the shape `−log p(answer)`.** It comes back in section 4b with a
+weight in front of it.
+
+### Loss is not the metric
+
+You **optimise** the loss; you **report** the metric. They drift apart:
+
+- train loss down, validation loss up → overfitting,
+- loss down, recall down → the loss never encoded what you care about.
+
+A loss is a *proxy* for "good", not "good". Every Goodhart failure grows in that
+gap — and reward hacking is the RL-shaped version of it.
 
 ## 2 · Gradient
 
@@ -90,6 +121,49 @@ The reward becomes a **weight**. The gradient comes entirely from `∇log π`.
 This is why `log π` is everywhere in RL papers, and why the method is called
 *policy gradient* rather than *reward gradient*. The reward was never
 differentiated; it was only multiplied.
+
+## 4b · The surrogate loss
+
+You cannot write `L = J`, because `J` is not differentiable in `θ`. So you write a
+**surrogate** whose gradient happens to point the right way:
+
+```
+L = − A · log πθ(a|s)
+```
+
+Check the sign: `∇(−A·log π) = −A·∇log π`, which is exactly the direction that
+increases `J`. The surrogate is not the objective; it is a shape with the right
+slope.
+
+Now put it next to the pretraining loss from section 1:
+
+```
+SFT:   L = − 1 · log p(token)          weight is always 1
+RL:    L = − A · log p(action)         weight is the advantage
+```
+
+**RL is supervised learning with a weight on each example, and the verifier sets
+that weight.**
+
+- `A > 0` → this trajectory is worth imitating
+- `A < 0` → worth *anti*-imitating
+- `A = 0` → weight zero; the example contributes nothing at all
+
+That is the entire structural difference between SFT and RLVR — and it is why a
+broken verifier is so destructive: **it is assigning the wrong weight to every
+piece of data the model sees.**
+
+### In RL the loss value means nothing
+
+Only its direction does. Multiply every advantage by 10 and the loss scales by 10
+while the gradient direction is unchanged — the only thing that moved is the step
+size, and that is `η`'s job.
+
+So in supervised learning, "loss 0.3" means the model improved. In RL, "loss 0.02"
+means nothing whatsoever. This is why
+[`s0_baseline/toy_grpo.py`](../s0_baseline/toy_grpo.py) deliberately prints no
+loss: pass rate, `std(r)`, `|A|` and entropy all have physical meaning; the loss
+does not.
 
 ## 5 · Variance, and why the naive estimator fails
 
@@ -220,6 +294,7 @@ calibration is a product decision.
 
 | Not the same | Difference |
 |---|---|
+| loss / metric | you minimise one and report the other; when they diverge you have overfitting |
 | gradient / loss | the loss is where you are; the gradient is which way to walk |
 | reward / advantage | the reward is absolute; the advantage is relative to the group |
 | baseline / critic | a baseline is any `b(s)`; a critic is a *learned* `V(s)` |
