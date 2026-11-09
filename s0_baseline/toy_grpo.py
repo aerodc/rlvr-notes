@@ -192,9 +192,13 @@ def grpo_step(
 # --------------------------------------------------------------------------- #
 
 
-def run(task_name: str, steps: int, group_size: int, lr: float, seed: int) -> dict:
+def run(
+    task_name: str, steps: int, group_size: int, lr: float, seed: int, noise: float | None = None
+) -> dict:
     rng = random.Random(seed)
     task = build_task(task_name)
+    if noise is not None:
+        task.verifier_noise = noise
     logits = [0.0] * task.n_actions
 
     history: list[StepStats] = []
@@ -274,10 +278,16 @@ def main() -> None:
     p.add_argument("--group", type=int, default=8, help="rollouts per prompt (GRPO G)")
     p.add_argument("--lr", type=float, default=0.5)
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument(
+        "--noise",
+        type=float,
+        default=None,
+        help="override the verifier error rate (0.0 = honest, 0.5 = coin flip)",
+    )
     p.add_argument("--json", action="store_true", help="emit the summary as JSON")
     args = p.parse_args()
 
-    result = run(args.task, args.steps, args.group, args.lr, args.seed)
+    result = run(args.task, args.steps, args.group, args.lr, args.seed, args.noise)
 
     if args.json:
         print(json.dumps({k: v for k, v in result.items() if k != "history"}, indent=2))
