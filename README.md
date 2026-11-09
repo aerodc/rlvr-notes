@@ -78,6 +78,7 @@ Start at the bottom instead? [`docs/06-rl-basics.md`](docs/06-rl-basics.md) is t
 4. [`docs/12-questions.md`](docs/12-questions.md) — the self-test. If you can answer these, you can hold a technical conversation with a lab.
 5. [`docs/04-memo.md`](docs/04-memo.md) — the one-page position to carry into the job, with the blanks filled from measurement rather than opinion.
 6. [`docs/05-first-30-days.md`](docs/05-first-30-days.md) — the commitment doc: three deliverables, the asks, and the things I will not do.
+7. [`docs/08-why-rl-is-hard.md`](docs/08-why-rl-is-hard.md) — why the field is new at the layer that matters, and where the difficulty actually sits.
 
 ---
 

@@ -83,3 +83,9 @@ are arguments, and an argument is worth more than an opinion.
 ---
 
 *One page. If it needs two, the argument is not finished.*
+
+---
+
+*Why these positions and not others — the three layers of "newness", the five signs
+of an immature discipline, and where the difficulty actually sits:
+[`08-why-rl-is-hard.md`](08-why-rl-is-hard.md).*
