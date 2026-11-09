@@ -1,7 +1,9 @@
 .PHONY: help toy toy-flat toy-hard toy-noisy test env env-load env-test sweep clean
 
+GROUP ?= 8
+
 help:
-	@echo "S0  make toy | toy-flat | toy-hard | toy-noisy   (no GPU, no deps)"
+	@echo "S0  make toy [GROUP=1] | toy-flat | toy-hard | toy-noisy   (no GPU, no deps)"
 	@echo "S1  make test                                    verifier tests"
 	@echo "S2  make env                                     start env service on :8787"
 	@echo "    make env-test                                end-to-end client check"
@@ -9,7 +11,7 @@ help:
 	@echo "S3  make sweep                                   difficulty calibration sweep"
 
 toy:
-	python3 s0_baseline/toy_grpo.py --task learnable
+	python3 s0_baseline/toy_grpo.py --task learnable --group $(GROUP)
 
 toy-flat:
 	python3 s0_baseline/toy_grpo.py --task flat
