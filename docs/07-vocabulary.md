@@ -246,6 +246,13 @@ objective = reward  −  β · KL(π_θ ‖ π_ref)
 `β` is often very small — or zero — in RLVR, because a verifier is harder to flatter
 than a reward model. Harder is not impossible; see [`s4_failure`](../s4_failure).
 
+**A real case.** In the SmolLM3 run, GRPO was applied with no length constraint, and
+the model — never asked for long reasoning — learned to produce it anyway, because
+length correlated with reward. Nothing in `verify()` was wrong. The reward simply
+never said "be brief", and the repair was a length penalty. That is regularisation
+by another name, and it is the most common shape of the failure: **not a broken
+checker, an under-specified reward.**
+
 Related, and often also called regularisation:
 
 - **Entropy bonus** — pay for exploration, discourage premature certainty.
