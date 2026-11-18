@@ -38,11 +38,27 @@ measurement.
 **Done when** the numbers exist and are reproducible from a script in the repo,
 not from a one-off notebook.
 
-### 3 · By 9 January — one thing in use, and a proposal
+### 3 · By 9 January — one thing in use, one capability proven, one proposal
 
 **The thing:** the smallest tool that removes one of the three slowest steps from
 deliverable 1. Success is not that it shipped; it is that someone uses it on a task
 I didn't touch.
+
+**The capability:** one task running **two agents in the same world, with fork-based
+self-play** — end to end on a *copy* of a task, scoped to a single task, not a
+framework.
+
+The reason this is the third deliverable and not the first: it is the cheapest
+possible proof of the rarest thing a frontier lab asks for. Their agentic-RL
+postings ask for multi-agent RL, self-play and `fork`-able sandboxes in the same
+breath, and almost nobody who has built environments has built one where two
+policies share a world. If our stack can do it, that is worth knowing in January
+rather than June.
+
+**It is conditional on the baseline.** If the stack cannot fork a live world, the
+deliverable changes to: a written assessment of what forking would cost, plus a
+prototype outside the stack that demonstrates the mechanism. Either answer is a
+result; a promise to "look into it later" is not.
 
 **The proposal:** one page for Q1 — what I'd work on next, and what I'd stop doing.
 
@@ -56,6 +72,7 @@ I didn't touch.
 | One lab feedback channel, even a redacted one | the only signal that says whether an env worked | Delivery lead |
 | 3 × 1 hour: delivery lead, clone engineer, research | the map is wrong if it's built from documents | Will to broker |
 | A sandbox quota to run baseline rollouts | ~400 rollouts per env to get ±5% on pass rate | Platform |
+| **One non-live environment I may copy and modify** | deliverable 3 needs a second agent in the world; a copy of a shipped task is enough, and nothing live is touched | Will |
 | Permission to instrument read-only | nothing in this plan changes a live environment | Will |
 
 ---
@@ -73,13 +90,14 @@ I didn't touch.
 
 ## How to judge whether it worked
 
-At day 30 there should be answers — numbers, not adjectives — to five questions:
+At day 30 there should be answers — numbers, not adjectives — to six questions:
 
 1. What is the pass-rate distribution across what we have shipped?
 2. What does one episode cost us, end to end?
 3. What is our determinism rate, and who measures it?
 4. Who owns fidelity for each clone, and what is the number this month?
 5. What is our first diagnostic when a lab says "we trained on it and nothing moved"?
+6. **Can our stack put two agents in one world, and what breaks first when we do?**
 
 If I can answer those, the month was worth its salary. If I can't, the plan was
 wrong and I'd rather say so on 9 January than in March.
