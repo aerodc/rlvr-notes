@@ -80,6 +80,7 @@ Start at the bottom instead? [`docs/06-rl-basics.md`](docs/06-rl-basics.md) is t
 6. [`docs/05-first-30-days.md`](docs/05-first-30-days.md) — the commitment doc: three deliverables, the asks, and the things I will not do.
 7. [`docs/08-why-rl-is-hard.md`](docs/08-why-rl-is-hard.md) — why the field is new at the layer that matters, and where the difficulty actually sits.
 8. [`docs/10-agentenv-lessons.md`](docs/10-agentenv-lessons.md) — what a frontier lab's environment platform actually looks like, from Kimi K3's open-sourced AgentENV.
+9. [`docs/11-what-labs-buy.md`](docs/11-what-labs-buy.md) — an evidence set: what frontier-lab job postings and the public data-economics thesis say the buyer actually needs.
 
 ---
 
