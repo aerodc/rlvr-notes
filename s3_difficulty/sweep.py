@@ -57,6 +57,16 @@ def bar(value: float, width: int = 40) -> str:
     return "█" * filled + "·" * (width - filled)
 
 
+def dynamic_sampling_cost(p: float, group: int) -> float:
+    """Rollouts you must pay for, per group that carries any signal.
+
+    Dynamic sampling (DAPO) discards all-correct and all-wrong groups. That is
+    correct, and it is not free: the cost of one useful group is 1 / signal(p).
+    """
+    s = signal_exact(p, group)
+    return float("inf") if s <= 0 else 1.0 / s
+
+
 def sweep(group_sizes: list[int], steps: int = 30) -> dict:
     ps = [round(i / (steps * 2), 4) for i in range(1, steps * 2)]
     rng = random.Random(0)
@@ -64,6 +74,19 @@ def sweep(group_sizes: list[int], steps: int = 30) -> dict:
     out: dict = {"group_sizes": group_sizes, "curve": {}, "bands": {}, "rollouts_needed": {}}
     for g in group_sizes:
         out["curve"][g] = [{"p": p, "signal": round(signal_exact(p, g), 4)} for p in ps]
+
+    out["dynamic_sampling"] = {
+        g: [
+            {
+                "p": p,
+                "signal": round(signal_exact(p, g), 4),
+                "discarded": round(1 - signal_exact(p, g), 4),
+                "rollouts_per_useful_group": round(dynamic_sampling_cost(p, g), 3),
+            }
+            for p in (0.1, 0.2, 0.35, 0.5, 0.65, 0.8, 0.9, 0.95, 0.98, 0.99)
+        ]
+        for g in group_sizes
+    }
 
     peak = signal_exact(0.5, max(group_sizes))
 
@@ -97,6 +120,11 @@ def main() -> None:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--groups", default="4,8,16", help="group sizes to compare")
+    ap.add_argument(
+        "--dynamic-sampling",
+        action="store_true",
+        help="print the DAPO cost multiplier: rollouts paid per group that carries signal",
+    )
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args()
 
@@ -141,6 +169,27 @@ def main() -> None:
     print("  Closed form vs simulation (G=8, 20k trials)")
     for row in data["monte_carlo_check"]:
         print(f"    p={row['p']:<5} exact {row['exact']:.3f}   simulated {row['simulated']:.3f}")
+
+    if args.dynamic_sampling:
+        print()
+        print("  Dynamic sampling (DAPO): what a badly calibrated environment costs")
+        print("  All-correct and all-wrong groups are discarded, so the price of one")
+        print("  useful group is 1 / signal(p).")
+        print()
+        for g in groups:
+            print(f"    G={g}")
+            print("      p      signal   discarded   rollouts paid per useful group")
+            for row in data["dynamic_sampling"][g]:
+                cost = row["rollouts_per_useful_group"]
+                print(
+                    f"      {row['p']:>4.2f}    {row['signal']:.3f}     "
+                    f"{row['discarded'] * 100:>5.1f}%      {cost:>5.2f}x"
+                )
+            print()
+        print("  The last column is a budget line, not a quality note. At p=0.98 the")
+        print("  same compute buys 6.7x fewer useful groups than at p=0.5, and the")
+        print("  environment is unlikely to be cheaper to run.")
+        print()
 
     print()
     print("  Read this as: an environment at p=0.98 is not 'almost solved', it is")

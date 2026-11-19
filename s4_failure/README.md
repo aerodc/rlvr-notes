@@ -82,6 +82,31 @@ Which is why length penalties, KL terms and negative assertions belong to one
 conversation: they are the same move — **constrain the solution space, because no
 objective can say everything you mean.**
 
+### Why length specifically gets learned
+
+There is a mechanical reason this failure recurs, and it is worth knowing because it
+is a property of the algorithm, not of any one environment.
+
+The reward is one number for the **whole completion**. The policy-gradient loss is
+computed **per token**, and the group-normalised advantage is broadcast identically
+onto every token in the trajectory. A 900-token chain of thought in which 40 tokens
+did the work and 860 were filler gives all 900 the same positive advantage.
+
+So the algorithm cannot say *which* tokens earned the reward. It can only say *this
+trajectory was better*. Anything that reliably accompanies a better trajectory —
+length, formatting, a particular opening phrase — gets reinforced alongside the
+thing you meant. Length is simply the correlate that is easiest to find, because
+longer reasoning genuinely does help on hard tasks.
+
+This is the **token-level loss versus sequence-level reward** mismatch, and it is
+the reason DAPO and its descendants exist: token-level aggregation, Clip-Higher,
+dynamic sampling, overlong shaping. None of them fix credit assignment. They bound
+its damage.
+
+**The consequence for an environment:** if a correlate of success exists and you
+have not constrained it, RLVR will find it. Your verifier is not the only thing
+being optimised — the *reward's omissions* are part of the objective.
+
 ## The thing to internalise
 
 A broken verifier does not fail loudly. Training runs, the reward curve climbs,
