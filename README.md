@@ -81,6 +81,7 @@ Start at the bottom instead? [`docs/06-rl-basics.md`](docs/06-rl-basics.md) is t
 7. [`docs/08-why-rl-is-hard.md`](docs/08-why-rl-is-hard.md) — why the field is new at the layer that matters, and where the difficulty actually sits.
 8. [`docs/10-agentenv-lessons.md`](docs/10-agentenv-lessons.md) — what a frontier lab's environment platform actually looks like, from Kimi K3's open-sourced AgentENV.
 9. [`docs/11-what-labs-buy.md`](docs/11-what-labs-buy.md) — an evidence set: what frontier-lab job postings and the public data-economics thesis say the buyer actually needs.
+10. [`docs/13-training-side-signals.md`](docs/13-training-side-signals.md) — Rocket, AgentENV and Lambert's open problems, read together for the eight things a qualified environment must provide.
 
 ---
 
